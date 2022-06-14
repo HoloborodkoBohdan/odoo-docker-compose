@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   db:
     container_name: postgresql_for_odoo
@@ -10,7 +10,7 @@ services:
     networks:
       - postgres
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
         - ./postgresql:/var/lib/postgresql/data
     logging:
@@ -20,7 +20,7 @@ services:
           max-size: "10m"
     restart: always
 
-  odoo14:
+  odoo15:
     container_name: odoo_container
     image: odoo:${ODOO_VERSION}
     depends_on:

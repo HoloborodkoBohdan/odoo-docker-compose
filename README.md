@@ -1,4 +1,4 @@
-# Usage
+# Odoo 15 docker usage 
 
 Change the folder permission to make sure that the container is able to access the directory:
 ```
@@ -11,7 +11,7 @@ Start the container:
 $ docker-compose up
 ```
 
-* Then open `localhost:8071` to access Odoo 14.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
+* Then open `localhost:8071` to access Odoo 15.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
 
 ```
 ports:
@@ -34,6 +34,7 @@ The **addons** folder contains custom addons. Just put your custom addons if you
 # Odoo configuration
 
 To change Odoo configuration, edit file: **etc/odoo.conf**.
+Configuration sample: [www.odoo.com/deploy.html](https://www.odoo.com/documentation/15.0/administration/install/deploy.html#id5)
 
 # Access to PgAdmin:
 
@@ -51,18 +52,20 @@ If you don't need PgAdmin, you can comment or delete it in docker-compose.yml.
 * Username as POSTGRES_USER: odoo
 * Password as POSTGRES_PASSWORD: odoo
 
+![pgadmin-conf](screenshots/pgadmin-conf.png)
+
 # docker-compose.yml
 
-* odoo:14
+* odoo:15
 * postgres:13
 * pgadmin4
 
-# Odoo 14 screenshots
+# Odoo 15 screenshots
 
-![odoo14-start-screen](screenshots/odoo14-start-screen.png)
+![odoo15-start-screen](screenshots/odoo15-start-screen.png)
 
-![odoo14-apps-screen.png](screenshots/odoo14-apps-screen.png)
+![odoo15-apps-screen.png](screenshots/odoo15-apps-screen.png)
 
-![odoo14-settings-screen.png](screenshots/odoo14-settings-screen.png)
+![odoo15-settings-screen.png](screenshots/odoo15-settings-screen.png)
 
-![odoo14-sales-screen.png](screenshots/odoo14-sales-screen.png)
+![odoo15-sales-screen.png](screenshots/odoo15-sales-screen.png)
