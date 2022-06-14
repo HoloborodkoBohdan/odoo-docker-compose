@@ -1,4 +1,14 @@
-# Odoo 15 docker usage 
+# Odoo docker usage 
+
+This repo contains docker-compose for odoo v14 and up. If you need docker-compose for previous versions, look:
+
+[Odoo 13](https://github.com/HoloborodkoBohdan/odoo-13-docker-compose)
+
+[Odoo 12](https://github.com/HoloborodkoBohdan/odoo-12-docker-compose)
+
+or simply change last version to related odoo version. Keep in mind that you may need to change postgres version also.
+
+## How to try odoo in docker-compose?
 
 Clone this repo with related branch. Change the folder permission to make sure that the container is able to access the directory:
 ```
@@ -70,3 +80,8 @@ If you don't need PgAdmin, you can comment or delete it in docker-compose.yml.
 ![odoo15-settings-screen.png](screenshots/odoo15-settings-screen.png)
 
 ![odoo15-sales-screen.png](screenshots/odoo15-sales-screen.png)
+
+## To Do
+* add links to related docs and useful info
+* add cli examples in docker
+* add Dockerfile with custom dependencies
