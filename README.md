@@ -1,14 +1,15 @@
-# Usage
+# Odoo 14 docker usage
 
-Change the folder permission to make sure that the container is able to access the directory:
+Clone this repo with related branch. Change the folder permission to make sure that the container is able to access the directory:
 ```
-$ sudo chmod -R 777 addons
-$ sudo chmod -R 777 etc
+git clone --single-branch --branch 14.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo14
+sudo chmod -R 777 odoo14/addons
+sudo chmod -R 777 odoo14/etc
+cd odoo14
 ```
-
-Start the container:
+Now you're in folder **odoo14**. Let's start the container:
 ```
-$ docker-compose up
+docker-compose up
 ```
 
 * Then open `localhost:8071` to access Odoo 14.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
@@ -24,7 +25,7 @@ ports:
 To run in detached mode, execute this command:
 
 ```
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 # Custom addons
