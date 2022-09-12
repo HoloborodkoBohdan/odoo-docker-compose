@@ -85,3 +85,8 @@ If you don't need PgAdmin, you can comment or delete it in docker-compose.yml.
 * add links to related docs and useful info
 * add cli examples in docker
 * add Dockerfile with custom dependencies
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
