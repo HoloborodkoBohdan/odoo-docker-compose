@@ -6,7 +6,6 @@ __pycache__/
 # Environment & config
 .env
 *.env
-.env.*
 
 # Odoo logs and compiled assets
 *.log
@@ -88,3 +87,4 @@ logs/
 
 # Ignore everything inside addons/
 addons/*
+!addons/.gitkeep
