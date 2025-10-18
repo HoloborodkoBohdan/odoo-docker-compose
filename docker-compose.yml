@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   db:
-    container_name: postgresql_for_odoo
+    container_name: "postgresql_odoo_${POSTGRES_VERSION}"
     image: postgres:${POSTGRES_VERSION}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -21,7 +20,7 @@ services:
     restart: always
 
   odoo15:
-    container_name: odoo_container
+    container_name: "odoo_${ODOO_VERSION}"
     image: odoo:${ODOO_VERSION}
     depends_on:
       - db

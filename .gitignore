@@ -1,0 +1,90 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment & config
+.env
+*.env
+.env.*
+
+# Odoo logs and compiled assets
+*.log
+*.swp
+*.tmp
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.dat
+*.sqlite
+*.sqlite3
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# macOS and system files
+.DS_Store
+Thumbs.db
+
+# Docker data & volumes
+postgresql/
+odoo-data/
+*/__pycache__/
+
+# Python virtual environments
+venv/
+.env/
+.envrc
+.venv/
+env/
+ENV/
+
+# Node / JS (if using custom web modules)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Backup and archive files
+*.bak
+*.old
+*.orig
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Compiled translations
+*.mo
+
+# Custom addons build files
+addons/*/static/lib/
+addons/*/static/dist/
+addons/*/node_modules/
+
+# PyCharm & VSCode
+*.iml
+*.ipr
+*.iws
+
+# Coverage / testing
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# JetBrains
+*.idea/
+out/
+
+# VSCode
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Ignore everything inside addons/
+addons/*

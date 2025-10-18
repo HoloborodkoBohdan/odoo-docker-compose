@@ -12,11 +12,11 @@ Now you're in folder **odoo15**. Let's start the container:
 $ docker-compose up
 ```
 
-* Then open `localhost:8071` to access Odoo 15.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
+* Then open `localhost:8015` to access Odoo 15.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
 
 ```
 ports:
- - "8071:8069"
+ - "8015:8069"
 ```
 
 
