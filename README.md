@@ -1,13 +1,13 @@
-# Odoo 18 Fast Development Environment
+# Odoo 19 Fast Development Environment
 
-Quick Docker-based setup for Odoo 18 development with PostgreSQL 16 and PgAdmin.
+Quick Docker-based setup for Odoo 19 development with PostgreSQL 16 and PgAdmin.
 
 ## Quick Start
 
 Clone this repo and set up permissions:
 ```bash
-git clone --single-branch --branch 18.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo18
-cd odoo18
+git clone --single-branch --branch 19.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo19
+cd odoo19
 sudo chmod -R 777 addons etc
 ```
 
@@ -24,7 +24,7 @@ Edit `.env` and set your credentials:
 - `PGADMIN_DEFAULT_PASSWORD` - PgAdmin login password
 
 **Note:** Default ports are configured for fast setup:
-- Odoo: `8018`
+- Odoo: `8019`
 - PostgreSQL: `6543`
 - PgAdmin: `5050`
 
@@ -34,7 +34,7 @@ Edit `.env` and set your credentials:
 docker-compose up -d
 ```
 
-Access Odoo at: **http://localhost:8018**
+Access Odoo at: **http://localhost:8019**
 
 To view logs:
 ```bash
@@ -55,7 +55,7 @@ Edit **etc/odoo.conf** to customize Odoo settings.
 
 Master Password default: `admin0doo` (change this in production!)
 
-Full configuration guide: [Odoo Deployment Documentation](https://www.odoo.com/documentation/18.0/administration/on_premise/deploy.html)
+Full configuration guide: [Odoo Deployment Documentation](https://www.odoo.com/documentation/19.0/administration/on_premise/deploy.html)
 
 Log file location: **etc/odoo-server.log**
 
@@ -89,7 +89,7 @@ If you don't need PgAdmin, comment it out in `docker-compose.yml`.
 ## Docker Services
 
 The environment includes:
-- **odoo:18** - Odoo application server
+- **odoo:19** - Odoo application server
 - **postgres:16** - PostgreSQL database
 - **pgadmin4** - Database management UI
 
@@ -134,7 +134,8 @@ docker-compose logs -f
 ## Version Support
 
 This repository supports multiple Odoo versions via branches:
-- 18.0 (current)
+- 19.0 (current)
+- 19.0
 - 17.0
 - 16.0
 - 15.0
