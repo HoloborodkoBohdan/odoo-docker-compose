@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   db:
-    container_name: postgresql_for_odoo
+    container_name: "postgresql_odoo_${POSTGRES_VERSION}"
     image: postgres:${POSTGRES_VERSION}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -12,16 +11,16 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
-        - ./postgresql:/var/lib/postgresql/data
+      - ./postgresql:/var/lib/postgresql/data
     logging:
       driver: "json-file"
       options:
-          max-file: "5"
-          max-size: "10m"
+        max-file: "5"
+        max-size: "10m"
     restart: always
 
-  odoo15:
-    container_name: odoo_container
+  odoo:
+    container_name: "odoo_${ODOO_VERSION}"
     image: odoo:${ODOO_VERSION}
     depends_on:
       - db
@@ -37,12 +36,12 @@ services:
     logging:
       driver: "json-file"
       options:
-          max-file: "5"
-          max-size: "10m"
+        max-file: "5"
+        max-size: "10m"
     restart: always
 
   pgadmin:
-    container_name: pgadmin_container
+    container_name: "pgadmin_${POSTGRES_VERSION}"
     image: dpage/pgadmin4
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
