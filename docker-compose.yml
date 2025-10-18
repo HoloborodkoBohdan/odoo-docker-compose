@@ -1,6 +1,6 @@
 services:
   db:
-    container_name: "postgresql_odoo_${POSTGRES_VERSION}"
+    container_name: "postgresql_odoo_${ODOO_VERSION}"
     image: postgres:${POSTGRES_VERSION}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -11,7 +11,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
-      - ./postgresql:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     logging:
       driver: "json-file"
       options:
@@ -29,7 +29,11 @@ services:
     networks:
       - postgres
     tty: true
-    command: -- --dev=reload
+    command: -- --dev=all
+    environment:
+      - HOST=db
+      - USER=${POSTGRES_USER}
+      - PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - ./addons:/mnt/extra-addons
       - ./etc:/etc/odoo
@@ -41,7 +45,7 @@ services:
     restart: always
 
   pgadmin:
-    container_name: "pgadmin_${POSTGRES_VERSION}"
+    container_name: "pgadmin_${ODOO_VERSION}"
     image: dpage/pgadmin4
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
@@ -57,3 +61,6 @@ services:
 networks:
   postgres:
     driver: bridge
+
+volumes:
+  postgres_data:

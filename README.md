@@ -25,8 +25,8 @@ Edit `.env` and set your credentials:
 
 **Note:** Default ports are configured for fast setup:
 - Odoo: `8019`
-- PostgreSQL: `6543`
-- PgAdmin: `5050`
+- PostgreSQL: `6544`
+- PgAdmin: `5051`
 
 ### Start Development Environment
 
@@ -45,7 +45,7 @@ docker-compose logs -f odoo
 
 Place your custom addons in the **addons/** folder. They will be automatically mounted to `/mnt/extra-addons` in the container.
 
-The development environment includes `--dev=reload` for automatic module reloading.
+The development environment includes `--dev=all` for automatic module reloading when you make changes to your addons.
 
 ## Configuration
 
@@ -68,7 +68,7 @@ To change ports, edit the `.env` file:
 
 ## PgAdmin Access
 
-PgAdmin is available at: **http://localhost:5050**
+PgAdmin is available at: **http://localhost:5051**
 
 Login with credentials from your `.env` file (`PGADMIN_DEFAULT_EMAIL` and `PGADMIN_DEFAULT_PASSWORD`).
 
@@ -96,9 +96,11 @@ The environment includes:
 ## Development Workflow
 
 1. Add custom modules to `addons/` folder
-2. Restart Odoo container: `docker-compose restart odoo`
-3. Update app list in Odoo (Apps → Update Apps List)
+2. Changes to Python files will auto-reload thanks to `--dev=all` mode
+3. For new modules: Update app list in Odoo (Apps → Update Apps List)
 4. Install/upgrade your module
+
+**Note:** With `--dev=all` enabled, Odoo automatically reloads when you save changes to your addon files, eliminating the need for manual container restarts during development.
 
 ## Stopping the Environment
 
@@ -109,7 +111,6 @@ docker-compose down
 To remove all data (fresh start):
 ```bash
 docker-compose down -v
-sudo rm -rf postgresql/
 ```
 
 ## Troubleshooting
@@ -122,8 +123,13 @@ sudo chmod -R 777 addons etc
 **Reset database:**
 ```bash
 docker-compose down -v
-sudo rm -rf postgresql/
 docker-compose up -d
+```
+
+**Password authentication failed:**
+If you get PostgreSQL authentication errors, ensure the password in `etc/odoo.conf` matches `POSTGRES_PASSWORD` in your `.env` file, then restart:
+```bash
+docker-compose restart odoo
 ```
 
 **View container logs:**
