@@ -1,22 +1,26 @@
-# Odoo 16 docker usage 
+# Odoo 17 docker usage 
 
 Clone this repo with related branch. Change the folder permission to make sure that the container is able to access the directory:
 ```
-git clone --single-branch --branch 16.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo16
-sudo chmod -R 777 odoo16/addons
-sudo chmod -R 777 odoo16/etc
-cd odoo16
+git clone --single-branch --branch 17.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo17
 ```
-Now you're in folder **odoo16**. Let's start the container:
+and then:
+```
+sudo chmod -R 777 odoo17/addons
+sudo chmod -R 777 odoo17/etc
+cd odoo17
+```
+
+Now you're in folder **odoo17**. Let's start the container:
 ```
 $ docker-compose up
 ```
 
-* Then open `localhost:6016` to access Odoo 16.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
+* Then open `localhost:8017` to access Odoo 17.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
 
 ```
 ports:
- - "8016:8069"
+ - "8017:8069"
 ```
 
 
@@ -37,7 +41,7 @@ The **addons** folder contains custom addons. Just put your custom addons if you
 Master Password: ```admin0doo```. You can change it into odoo.conf.
 
 To change Odoo configuration, edit file: **etc/odoo.conf**.
-Configuration sample: [www.odoo.com/deploy.html](https://www.odoo.com/documentation/16.0/administration/on_premise/deploy.html)
+Configuration sample: [www.odoo.com/deploy.html](https://www.odoo.com/documentation/17.0/administration/on_premise/deploy.html)
 
 # Access to PgAdmin:
 
@@ -59,6 +63,6 @@ If you don't need PgAdmin, you can comment or delete it in docker-compose.yml.
 
 # docker-compose.yml
 
-* odoo:16
-* postgres:13
+* odoo:17
+* postgres:14
 * pgadmin4
