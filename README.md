@@ -1,68 +1,143 @@
-# Odoo 17 docker usage 
+# Odoo 18 Fast Development Environment
 
-Clone this repo with related branch. Change the folder permission to make sure that the container is able to access the directory:
-```
-git clone --single-branch --branch 17.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo17
-```
-and then:
-```
-sudo chmod -R 777 odoo17/addons
-sudo chmod -R 777 odoo17/etc
-cd odoo17
-```
+Quick Docker-based setup for Odoo 18 development with PostgreSQL 16 and PgAdmin.
 
-Now you're in folder **odoo17**. Let's start the container:
-```
-$ docker-compose up
+## Quick Start
+
+Clone this repo and set up permissions:
+```bash
+git clone --single-branch --branch 18.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo18
+cd odoo18
+sudo chmod -R 777 addons etc
 ```
 
-* Then open `localhost:8017` to access Odoo 17.0. If you want to start the server with a different port, change **ODOO_PORT** in .env to another value:
+### Environment Setup
 
+Copy the example environment file and configure it:
+```bash
+cp .env.example .env
 ```
-ports:
- - "8017:8069"
-```
 
+Edit `.env` and set your credentials:
+- `POSTGRES_PASSWORD` - Database password
+- `PGADMIN_DEFAULT_EMAIL` - PgAdmin login email
+- `PGADMIN_DEFAULT_PASSWORD` - PgAdmin login password
 
-* Log file is printed @ **etc/odoo-server.log**
+**Note:** Default ports are configured for fast setup:
+- Odoo: `8018`
+- PostgreSQL: `6543`
+- PgAdmin: `5050`
 
-To run in detached mode, execute this command:
+### Start Development Environment
 
-```
+```bash
 docker-compose up -d
 ```
 
-# Custom addons
+Access Odoo at: **http://localhost:8018**
 
-The **addons** folder contains custom addons. Just put your custom addons if you have any.
+To view logs:
+```bash
+docker-compose logs -f odoo
+```
 
-# Odoo configuration
+## Custom Addons
 
-Master Password: ```admin0doo```. You can change it into odoo.conf.
+Place your custom addons in the **addons/** folder. They will be automatically mounted to `/mnt/extra-addons` in the container.
 
-To change Odoo configuration, edit file: **etc/odoo.conf**.
-Configuration sample: [www.odoo.com/deploy.html](https://www.odoo.com/documentation/17.0/administration/on_premise/deploy.html)
+The development environment includes `--dev=reload` for automatic module reloading.
 
-# Access to PgAdmin:
+## Configuration
 
-You can use PgAdmin if you need. It's on port 5050 (127.0.0.1:5050 for example) and default credentials are:
+### Odoo Configuration
 
-* email: pgadmin4@pgadmin.org
-* password: admin
+Edit **etc/odoo.conf** to customize Odoo settings.
 
-If you don't need PgAdmin, you can comment or delete it in docker-compose.yml.
+Master Password default: `admin0doo` (change this in production!)
 
-# Add a new server in PgAdmin:
+Full configuration guide: [Odoo Deployment Documentation](https://www.odoo.com/documentation/18.0/administration/on_premise/deploy.html)
 
-* Host name/address: db
-* Port: 5432
-* Username as POSTGRES_USER: odoo
-* Password as POSTGRES_PASSWORD: odoo
+Log file location: **etc/odoo-server.log**
 
-![pgadmin-conf](screenshots/pgadmin-conf.png)
+### Port Configuration
 
-# docker-compose.yml
+To change ports, edit the `.env` file:
+- `ODOO_PORT` - Odoo web interface port
+- `POSTGRES_PORT` - PostgreSQL external port
+- `PGADMIN_PORT` - PgAdmin web interface port
 
-* odoo:17
-* postgres:14
-* pgadmin4
+## PgAdmin Access
+
+PgAdmin is available at: **http://localhost:5050**
+
+Login with credentials from your `.env` file (`PGADMIN_DEFAULT_EMAIL` and `PGADMIN_DEFAULT_PASSWORD`).
+
+### Add Odoo Database Server in PgAdmin:
+
+1. Right-click "Servers" → "Register" → "Server"
+2. Configure connection:
+   - **Name:** Odoo DB (any name)
+   - **Host name/address:** `db`
+   - **Port:** `5432`
+   - **Username:** Value from `POSTGRES_USER` in `.env`
+   - **Password:** Value from `POSTGRES_PASSWORD` in `.env`
+
+![PgAdmin Configuration](screenshots/pgadmin-conf.png)
+
+If you don't need PgAdmin, comment it out in `docker-compose.yml`.
+
+## Docker Services
+
+The environment includes:
+- **odoo:18** - Odoo application server
+- **postgres:16** - PostgreSQL database
+- **pgadmin4** - Database management UI
+
+## Development Workflow
+
+1. Add custom modules to `addons/` folder
+2. Restart Odoo container: `docker-compose restart odoo`
+3. Update app list in Odoo (Apps → Update Apps List)
+4. Install/upgrade your module
+
+## Stopping the Environment
+
+```bash
+docker-compose down
+```
+
+To remove all data (fresh start):
+```bash
+docker-compose down -v
+sudo rm -rf postgresql/
+```
+
+## Troubleshooting
+
+**Permission issues:**
+```bash
+sudo chmod -R 777 addons etc
+```
+
+**Reset database:**
+```bash
+docker-compose down -v
+sudo rm -rf postgresql/
+docker-compose up -d
+```
+
+**View container logs:**
+```bash
+docker-compose logs -f
+```
+
+## Version Support
+
+This repository supports multiple Odoo versions via branches:
+- 18.0 (current)
+- 17.0
+- 16.0
+- 15.0
+- 14.0
+
+Switch versions: `git checkout <version>`
