@@ -89,9 +89,10 @@ If you don't need PgAdmin, comment it out in `docker-compose.yml`.
 ## Docker Services
 
 The environment includes:
-- **odoo:19** - Odoo application server
+- **odoo:19** - Odoo application server with dev mode enabled
 - **postgres:16** - PostgreSQL database
 - **pgadmin4** - Database management UI
+- **odoo-test** - Dedicated test runner (profile: test)
 
 ## Development Workflow
 
@@ -101,6 +102,141 @@ The environment includes:
 4. Install/upgrade your module
 
 **Note:** With `--dev=all` enabled, Odoo automatically reloads when you save changes to your addon files, eliminating the need for manual container restarts during development.
+
+## Testing Modules
+
+### Quick Test with Script
+
+Use the provided test runner script to easily test your custom modules:
+
+```bash
+# Test a single module
+./run-tests.sh my_module
+
+# Test multiple modules (comma-separated)
+./run-tests.sh module1,module2,module3
+
+# Test multiple modules (space-separated with quotes)
+./run-tests.sh "module1 module2 module3"
+```
+
+This will:
+- Install the module(s) in a test database
+- Run all module tests
+- Display results with color-coded output
+
+#### Advanced Testing Options
+
+```bash
+# Test with custom database name
+./run-tests.sh my_module custom_test_db
+
+# Test multiple modules with custom database
+./run-tests.sh module1,module2 custom_test_db
+
+# Update existing modules before testing
+./run-tests.sh module1,module2 test_db --update
+
+# Run specific test tags
+./run-tests.sh my_module test_db --tags post_install
+
+# Test multiple modules with specific tags
+./run-tests.sh module1,module2,module3 test_db --tags post_install
+
+# Set custom log level
+./run-tests.sh my_module test_db --log-level debug
+```
+
+### Manual Testing with Docker
+
+You can also run tests manually using docker exec:
+
+```bash
+# Install single module and run tests
+docker exec -it odoo_${ODOO_VERSION} odoo \
+  -c /etc/odoo/odoo.conf \
+  --test-enable \
+  --stop-after-init \
+  -d test_db \
+  -i my_module
+
+# Install multiple modules and run tests
+docker exec -it odoo_${ODOO_VERSION} odoo \
+  -c /etc/odoo/odoo.conf \
+  --test-enable \
+  --stop-after-init \
+  -d test_db \
+  -i module1,module2,module3
+
+# Update existing modules and run tests
+docker exec -it odoo_${ODOO_VERSION} odoo \
+  -c /etc/odoo/odoo.conf \
+  --test-enable \
+  --stop-after-init \
+  -d test_db \
+  -u module1,module2
+```
+
+### Using Docker Compose Test Profile
+
+Run tests using the dedicated test service:
+
+```bash
+# Run single module tests
+docker-compose run --rm odoo-test -d test_db -i my_module
+
+# Run multiple module tests
+docker-compose run --rm odoo-test -d test_db -i module1,module2,module3
+
+# Run with specific test tags
+docker-compose run --rm odoo-test -d test_db -i my_module --test-tags post_install
+
+# Update and test multiple modules with tags
+docker-compose run --rm odoo-test -d test_db -u module1,module2 --test-tags post_install
+```
+
+### Test Database Management
+
+Test databases are separate from your development database:
+
+```bash
+# List all databases (including test databases)
+docker exec -it postgresql_odoo_${ODOO_VERSION} psql -U odoo -l
+
+# Drop a test database
+docker exec -it postgresql_odoo_${ODOO_VERSION} psql -U odoo -c "DROP DATABASE test_db;"
+```
+
+### Writing Tests for Your Modules
+
+Place your tests in your module's `tests/` directory:
+
+```
+addons/my_module/
+├── __init__.py
+├── __manifest__.py
+├── models/
+├── views/
+└── tests/
+    ├── __init__.py
+    ├── test_basic.py
+    └── test_advanced.py
+```
+
+Example test file:
+
+```python
+# addons/my_module/tests/test_basic.py
+from odoo.tests import TransactionCase, tagged
+
+@tagged('post_install', '-at_install')
+class TestMyModule(TransactionCase):
+    def test_basic_functionality(self):
+        # Your test code here
+        self.assertTrue(True)
+```
+
+For more information on Odoo testing, see: [Odoo Testing Documentation](https://www.odoo.com/documentation/19.0/developer/reference/backend/testing.html)
 
 ## Stopping the Environment
 
