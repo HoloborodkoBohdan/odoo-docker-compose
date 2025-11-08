@@ -1,6 +1,6 @@
 #!/bin/bash
 # Odoo Module Test Runner
-# Usage: ./run-tests.sh <module_name> [database_name] [options]
+# Usage: ./run-tests.sh <module_name(s)> [database_name] [options]
 
 set -e
 
@@ -8,6 +8,7 @@ set -e
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Load environment variables
@@ -28,23 +29,27 @@ CONTAINER_NAME="odoo_${ODOO_VERSION}"
 if [ -z "$MODULE_NAME" ] || [ "$MODULE_NAME" == "-h" ] || [ "$MODULE_NAME" == "--help" ]; then
     echo "Odoo Module Test Runner"
     echo ""
-    echo "Usage: ./run-tests.sh <module_name> [database_name] [options]"
+    echo "Usage: ./run-tests.sh <module_name(s)> [database_name] [options]"
     echo ""
     echo "Arguments:"
-    echo "  module_name       Name of the module to test (required)"
+    echo "  module_name(s)    Name(s) of module(s) to test (required)"
+    echo "                    Single: my_module"
+    echo "                    Multiple (comma-separated): module1,module2,module3"
+    echo "                    Multiple (quoted): \"module1 module2 module3\""
     echo "  database_name     Database to use for testing (default: test_db)"
     echo ""
     echo "Options:"
-    echo "  --install         Install module before testing (default behavior)"
-    echo "  --update          Update existing module before testing"
+    echo "  --install         Install module(s) before testing (default behavior)"
+    echo "  --update          Update existing module(s) before testing"
     echo "  --tags TAGS       Run specific test tags (e.g., 'post_install,at_install')"
     echo "  --log-level LEVEL Set log level (debug, info, warn, error)"
     echo ""
     echo "Examples:"
     echo "  ./run-tests.sh my_module"
-    echo "  ./run-tests.sh my_module custom_test_db"
+    echo "  ./run-tests.sh module1,module2,module3"
+    echo "  ./run-tests.sh \"module1 module2\" custom_test_db"
     echo "  ./run-tests.sh my_module test_db --update"
-    echo "  ./run-tests.sh my_module test_db --tags post_install"
+    echo "  ./run-tests.sh module1,module2 test_db --tags post_install"
     echo ""
     exit 0
 fi
@@ -89,6 +94,13 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Normalize module names (convert spaces to commas if needed)
+# This allows both "module1 module2" and "module1,module2" formats
+MODULE_NAME=$(echo "$MODULE_NAME" | tr ' ' ',')
+
+# Count modules for display
+MODULE_COUNT=$(echo "$MODULE_NAME" | tr ',' '\n' | wc -l)
+
 # Determine the module operation flag
 if [ "$MODE" == "update" ]; then
     MODULE_FLAG="-u"
@@ -101,7 +113,12 @@ fi
 echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}Odoo Module Testing${NC}"
 echo -e "${GREEN}========================================${NC}"
-echo -e "Module:    ${YELLOW}${MODULE_NAME}${NC}"
+if [ "$MODULE_COUNT" -eq 1 ]; then
+    echo -e "Module:    ${YELLOW}${MODULE_NAME}${NC}"
+else
+    echo -e "Modules:   ${YELLOW}${MODULE_COUNT} modules${NC}"
+    echo -e "           ${BLUE}${MODULE_NAME}${NC}"
+fi
 echo -e "Database:  ${YELLOW}${DB_NAME}${NC}"
 echo -e "Mode:      ${YELLOW}${MODE}${NC}"
 echo -e "Container: ${YELLOW}${CONTAINER_NAME}${NC}"
@@ -117,7 +134,11 @@ if [ -n "$TEST_TAGS" ]; then
     TEST_CMD="${TEST_CMD} --test-tags ${TEST_TAGS}"
 fi
 
-echo -e "${ACTION} module '${MODULE_NAME}'..."
+if [ "$MODULE_COUNT" -eq 1 ]; then
+    echo -e "${ACTION} module '${MODULE_NAME}'..."
+else
+    echo -e "${ACTION} ${MODULE_COUNT} modules..."
+fi
 echo -e "${YELLOW}Command: ${TEST_CMD}${NC}"
 echo ""
 
@@ -125,12 +146,20 @@ echo ""
 if docker exec -it "${CONTAINER_NAME}" ${TEST_CMD}; then
     echo ""
     echo -e "${GREEN}========================================${NC}"
-    echo -e "${GREEN}✓ Tests completed successfully!${NC}"
+    if [ "$MODULE_COUNT" -eq 1 ]; then
+        echo -e "${GREEN}✓ Tests completed successfully!${NC}"
+    else
+        echo -e "${GREEN}✓ All ${MODULE_COUNT} module tests passed!${NC}"
+    fi
     echo -e "${GREEN}========================================${NC}"
 else
     echo ""
     echo -e "${RED}========================================${NC}"
-    echo -e "${RED}✗ Tests failed!${NC}"
+    if [ "$MODULE_COUNT" -eq 1 ]; then
+        echo -e "${RED}✗ Tests failed!${NC}"
+    else
+        echo -e "${RED}✗ One or more module tests failed!${NC}"
+    fi
     echo -e "${RED}========================================${NC}"
     exit 1
 fi

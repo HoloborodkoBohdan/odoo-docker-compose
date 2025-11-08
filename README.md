@@ -110,11 +110,18 @@ The environment includes:
 Use the provided test runner script to easily test your custom modules:
 
 ```bash
+# Test a single module
 ./run-tests.sh my_module
+
+# Test multiple modules (comma-separated)
+./run-tests.sh module1,module2,module3
+
+# Test multiple modules (space-separated with quotes)
+./run-tests.sh "module1 module2 module3"
 ```
 
 This will:
-- Install the module in a test database
+- Install the module(s) in a test database
 - Run all module tests
 - Display results with color-coded output
 
@@ -124,11 +131,17 @@ This will:
 # Test with custom database name
 ./run-tests.sh my_module custom_test_db
 
-# Update existing module before testing
-./run-tests.sh my_module test_db --update
+# Test multiple modules with custom database
+./run-tests.sh module1,module2 custom_test_db
+
+# Update existing modules before testing
+./run-tests.sh module1,module2 test_db --update
 
 # Run specific test tags
 ./run-tests.sh my_module test_db --tags post_install
+
+# Test multiple modules with specific tags
+./run-tests.sh module1,module2,module3 test_db --tags post_install
 
 # Set custom log level
 ./run-tests.sh my_module test_db --log-level debug
@@ -139,7 +152,7 @@ This will:
 You can also run tests manually using docker exec:
 
 ```bash
-# Install module and run tests
+# Install single module and run tests
 docker exec -it odoo_${ODOO_VERSION} odoo \
   -c /etc/odoo/odoo.conf \
   --test-enable \
@@ -147,13 +160,21 @@ docker exec -it odoo_${ODOO_VERSION} odoo \
   -d test_db \
   -i my_module
 
-# Update existing module and run tests
+# Install multiple modules and run tests
 docker exec -it odoo_${ODOO_VERSION} odoo \
   -c /etc/odoo/odoo.conf \
   --test-enable \
   --stop-after-init \
   -d test_db \
-  -u my_module
+  -i module1,module2,module3
+
+# Update existing modules and run tests
+docker exec -it odoo_${ODOO_VERSION} odoo \
+  -c /etc/odoo/odoo.conf \
+  --test-enable \
+  --stop-after-init \
+  -d test_db \
+  -u module1,module2
 ```
 
 ### Using Docker Compose Test Profile
@@ -161,11 +182,17 @@ docker exec -it odoo_${ODOO_VERSION} odoo \
 Run tests using the dedicated test service:
 
 ```bash
-# Run specific module tests
+# Run single module tests
 docker-compose run --rm odoo-test -d test_db -i my_module
+
+# Run multiple module tests
+docker-compose run --rm odoo-test -d test_db -i module1,module2,module3
 
 # Run with specific test tags
 docker-compose run --rm odoo-test -d test_db -i my_module --test-tags post_install
+
+# Update and test multiple modules with tags
+docker-compose run --rm odoo-test -d test_db -u module1,module2 --test-tags post_install
 ```
 
 ### Test Database Management
