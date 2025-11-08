@@ -58,6 +58,24 @@ services:
       - postgres
     restart: unless-stopped
 
+  odoo-test:
+    container_name: "odoo_test_${ODOO_VERSION}"
+    image: odoo:${ODOO_VERSION}
+    depends_on:
+      - db
+    networks:
+      - postgres
+    environment:
+      - HOST=db
+      - USER=${POSTGRES_USER}
+      - PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - ./etc:/etc/odoo
+    profiles:
+      - test
+    command: --test-enable --stop-after-init
+
 networks:
   postgres:
     driver: bridge
