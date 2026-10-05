@@ -66,3 +66,16 @@ If you don't need PgAdmin, you can comment or delete it in docker-compose.yml.
 * odoo:17
 * postgres:14
 * pgadmin4
+
+# Version Support
+
+This repository supports multiple Odoo versions via branches:
+- [20.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/20.0)
+- [19.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/19.0)
+- [18.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/18.0)
+- [17.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/17.0) (current)
+- [16.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/16.0)
+- [15.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/15.0)
+- [14.0](https://github.com/HoloborodkoBohdan/odoo-docker-compose/tree/14.0)
+
+Switch versions: `git checkout <version>`
