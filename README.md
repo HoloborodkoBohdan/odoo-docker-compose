@@ -1,13 +1,13 @@
-# Odoo 19 Fast Development Environment
+# Odoo 20 Fast Development Environment
 
-Quick Docker-based setup for Odoo 19 development with PostgreSQL 16 and PgAdmin.
+Quick Docker-based setup for Odoo 20 development with PostgreSQL 16 and PgAdmin.
 
 ## Quick Start
 
 Clone this repo and set up permissions:
 ```bash
-git clone --single-branch --branch 19.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo19
-cd odoo19
+git clone --single-branch --branch 20.0 https://github.com/HoloborodkoBohdan/odoo-docker-compose odoo20
+cd odoo20
 sudo chmod -R 777 addons etc
 ```
 
@@ -24,9 +24,9 @@ Edit `.env` and set your credentials:
 - `PGADMIN_DEFAULT_PASSWORD` - PgAdmin login password
 
 **Note:** Default ports are configured for fast setup:
-- Odoo: `8019`
-- PostgreSQL: `6544`
-- PgAdmin: `5051`
+- Odoo: `8020`
+- PostgreSQL: `6545`
+- PgAdmin: `5052`
 
 ### Start Development Environment
 
@@ -34,7 +34,7 @@ Edit `.env` and set your credentials:
 docker-compose up -d
 ```
 
-Access Odoo at: **http://localhost:8019**
+Access Odoo at: **http://localhost:8020**
 
 To view logs:
 ```bash
@@ -55,7 +55,7 @@ Edit **etc/odoo.conf** to customize Odoo settings.
 
 Master Password default: `admin0doo` (change this in production!)
 
-Full configuration guide: [Odoo Deployment Documentation](https://www.odoo.com/documentation/19.0/administration/on_premise/deploy.html)
+Full configuration guide: [Odoo Deployment Documentation](https://www.odoo.com/documentation/20.0/administration/on_premise/deploy.html)
 
 Log file location: **etc/odoo-server.log**
 
@@ -68,7 +68,7 @@ To change ports, edit the `.env` file:
 
 ## PgAdmin Access
 
-PgAdmin is available at: **http://localhost:5051**
+PgAdmin is available at: **http://localhost:5052**
 
 Login with credentials from your `.env` file (`PGADMIN_DEFAULT_EMAIL` and `PGADMIN_DEFAULT_PASSWORD`).
 
@@ -89,7 +89,7 @@ If you don't need PgAdmin, comment it out in `docker-compose.yml`.
 ## Docker Services
 
 The environment includes:
-- **odoo:19** - Odoo application server
+- **odoo:20** - Odoo application server
 - **postgres:16** - PostgreSQL database
 - **pgadmin4** - Database management UI
 
@@ -140,8 +140,9 @@ docker-compose logs -f
 ## Version Support
 
 This repository supports multiple Odoo versions via branches:
-- 19.0 (current)
+- 20.0 (current)
 - 19.0
+- 18.0
 - 17.0
 - 16.0
 - 15.0
